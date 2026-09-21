@@ -14,6 +14,8 @@ ng test --include='**/recipe.service.spec.ts'     # run a single spec file
 
 There is no e2e test setup and no lint script configured.
 
+Tests target requirements/behavior, not individual functions — see `home.component.spec.ts` for the pattern (one `it()` per user-facing filtering/pagination/sorting behavior, not per computed signal).
+
 ## Architecture
 
 This is a **front-end-only** Angular 19 app (standalone components + signals, no NgModules, no NgRx). There is no backend: `recipe-manager.feature` requires all data to live in the browser, so the two core services persist directly to `localStorage` instead of calling an API.
