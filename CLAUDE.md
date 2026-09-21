@@ -18,7 +18,7 @@ Tests target requirements/behavior, not individual functions — see `home.compo
 
 ## Architecture
 
-This is a **front-end-only** Angular 19 app (standalone components + signals, no NgModules, no NgRx). There is no backend: `recipe-manager.feature` requires all data to live in the browser, so the two core services persist directly to `localStorage` instead of calling an API.
+This is a **front-end-only** Angular 19 app (standalone components + signals, no NgModules, no NgRx). There is no backend: the requirement specs (see `specs/`) require all data to live in the browser, so the two core services persist directly to `localStorage` instead of calling an API.
 
 - `core/services/recipe.service.ts` — single source of truth for recipes. Holds a `signal<Recipe[]>`, exposes `add`/`update`/`delete`/`getById`, and writes the full list to `localStorage` (`rm-recipes`) after every mutation. Seeds itself from `core/data/constants.ts` (`SEED_RECIPES`) on first load if nothing is persisted yet.
 - `core/services/auth.service.ts` — there's no real authentication. A fixed list of demo users (`DEMO_USERS` in `core/data/constants.ts`) is presented on the login screen; "logging in" just sets a `currentUser` signal and persists it to `localStorage` (`rm-current-user`). No passwords.
