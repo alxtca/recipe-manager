@@ -1,0 +1,19 @@
+.header {
+  .title {
+    margin-left: 8px;
+    font-weight: 500;
+  }
+
+  .spacer {
+    flex: 1 1 auto;
+  }
+
+  .current-user {
+    margin-right: 8px;
+    opacity: 0.85;
+  }
+
+  .active {
+    text-decoration: underline;
+  }
+}

@@ -1,0 +1,17 @@
+<mat-card class="login-card">
+  <mat-card-header>
+    <mat-card-title>Log in</mat-card-title>
+    <mat-card-subtitle>This is a demo app — pick a user to continue, no password required.</mat-card-subtitle>
+  </mat-card-header>
+
+  <mat-card-content>
+    <mat-nav-list>
+      @for (user of users; track user.id) {
+        <a mat-list-item (click)="loginAs(user)">
+          <mat-icon matListItemIcon>account_circle</mat-icon>
+          <span matListItemTitle>{{ user.name }}</span>
+        </a>
+      }
+    </mat-nav-list>
+  </mat-card-content>
+</mat-card>

@@ -1,0 +1,22 @@
+<mat-card class="recipe-card" appearance="outlined">
+  <div class="recipe-picture">
+    @if (recipe().iconKey) {
+      <mat-icon class="recipe-icon">{{ recipe().iconKey }}</mat-icon>
+    } @else {
+      <mat-icon class="recipe-icon placeholder">no_photography</mat-icon>
+    }
+  </div>
+
+  <mat-card-header>
+    <mat-card-title>{{ recipe().name }}</mat-card-title>
+    <mat-card-subtitle>{{ recipe().cuisine }} · by {{ recipe().userName }}</mat-card-subtitle>
+  </mat-card-header>
+
+  <mat-card-content>
+    <div class="ingredient-chips">
+      @for (ingredient of recipe().ingredients; track ingredient.name) {
+        <mat-chip disabled>{{ ingredient.name }}</mat-chip>
+      }
+    </div>
+  </mat-card-content>
+</mat-card>

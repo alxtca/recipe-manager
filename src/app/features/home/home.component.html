@@ -1,0 +1,32 @@
+<div class="home-layout">
+  <aside class="filter-column">
+    <app-recipe-filter
+      [users]="availableUsers()"
+      [availableIngredients]="availableIngredients()"
+      [filter]="filter()"
+      (filterChange)="onFilterChange($event)"
+    ></app-recipe-filter>
+  </aside>
+
+  <section class="recipes-column">
+    @if (pagedRecipes().length) {
+      <div class="recipe-grid">
+        @for (recipe of pagedRecipes(); track recipe.id) {
+          <app-recipe-card [recipe]="recipe"></app-recipe-card>
+        }
+      </div>
+    } @else {
+      <p class="empty-state">No recipes match the selected filters.</p>
+    }
+
+    @if (showPagination()) {
+      <mat-paginator
+        [length]="sortedRecipes().length"
+        [pageSize]="pageSize"
+        [pageIndex]="effectivePage()"
+        [hidePageSize]="true"
+        (page)="onPageChange($event)"
+      ></mat-paginator>
+    }
+  </section>
+</div>

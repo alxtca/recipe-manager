@@ -1,0 +1,85 @@
+<div class="filter-panel">
+  <h2>Filters</h2>
+
+  <mat-form-field appearance="outline" class="full-width">
+    <mat-label>User</mat-label>
+    <mat-select [value]="filter().userId" (selectionChange)="onUserChange($event.value)">
+      <mat-option [value]="null">All users</mat-option>
+      @for (user of users(); track user.id) {
+        <mat-option [value]="user.id">{{ user.name }}</mat-option>
+      }
+    </mat-select>
+  </mat-form-field>
+
+  <mat-form-field appearance="outline" class="full-width">
+    <mat-label>Cuisine</mat-label>
+    <mat-select [value]="filter().cuisine" (selectionChange)="onCuisineChange($event.value)">
+      <mat-option [value]="null">All cuisines</mat-option>
+      @for (cuisine of cuisines; track cuisine) {
+        <mat-option [value]="cuisine">{{ cuisine }}</mat-option>
+      }
+    </mat-select>
+  </mat-form-field>
+
+  <mat-form-field appearance="outline" class="full-width">
+    <mat-label>Sort by date added</mat-label>
+    <mat-select [value]="filter().sort" (selectionChange)="onSortChange($event.value)">
+      <mat-option value="newest">Newest first</mat-option>
+      <mat-option value="oldest">Oldest first</mat-option>
+    </mat-select>
+  </mat-form-field>
+
+  <mat-form-field appearance="outline" class="full-width">
+    <mat-label>Include ingredients</mat-label>
+    <mat-chip-grid #includeGrid>
+      @for (name of filter().includeIngredients; track name) {
+        <mat-chip-row (removed)="removeInclude(name)">
+          {{ name }}
+          <button matChipRemove aria-label="Remove ingredient">
+            <mat-icon>cancel</mat-icon>
+          </button>
+        </mat-chip-row>
+      }
+      <input
+        placeholder="Add ingredient..."
+        [formControl]="includeControl"
+        [matChipInputFor]="includeGrid"
+        [matAutocomplete]="includeAuto"
+        (matChipInputTokenEnd)="addInclude($event)"
+      />
+    </mat-chip-grid>
+    <mat-autocomplete #includeAuto="matAutocomplete" (optionSelected)="addInclude($event)">
+      @for (name of includeSuggestions(); track name) {
+        <mat-option [value]="name">{{ name }}</mat-option>
+      }
+    </mat-autocomplete>
+  </mat-form-field>
+
+  <mat-form-field appearance="outline" class="full-width">
+    <mat-label>Exclude ingredients</mat-label>
+    <mat-chip-grid #excludeGrid>
+      @for (name of filter().excludeIngredients; track name) {
+        <mat-chip-row (removed)="removeExclude(name)">
+          {{ name }}
+          <button matChipRemove aria-label="Remove ingredient">
+            <mat-icon>cancel</mat-icon>
+          </button>
+        </mat-chip-row>
+      }
+      <input
+        placeholder="Exclude ingredient..."
+        [formControl]="excludeControl"
+        [matChipInputFor]="excludeGrid"
+        [matAutocomplete]="excludeAuto"
+        (matChipInputTokenEnd)="addExclude($event)"
+      />
+    </mat-chip-grid>
+    <mat-autocomplete #excludeAuto="matAutocomplete" (optionSelected)="addExclude($event)">
+      @for (name of excludeSuggestions(); track name) {
+        <mat-option [value]="name">{{ name }}</mat-option>
+      }
+    </mat-autocomplete>
+  </mat-form-field>
+
+  <button mat-stroked-button (click)="clearAll()">Clear filters</button>
+</div>

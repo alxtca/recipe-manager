@@ -1,0 +1,16 @@
+<mat-toolbar color="primary" class="header">
+  <mat-icon>restaurant_menu</mat-icon>
+  <span class="title">Recipe Manager</span>
+
+  <span class="spacer"></span>
+
+  <a mat-button routerLink="/" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }">Home</a>
+
+  @if (auth.currentUser(); as user) {
+    <a mat-button routerLink="/dashboard" routerLinkActive="active">Dashboard</a>
+    <span class="current-user">{{ user.name }}</span>
+    <button mat-stroked-button color="accent" (click)="logout()">Log out</button>
+  } @else {
+    <a mat-button routerLink="/login" routerLinkActive="active">Log in</a>
+  }
+</mat-toolbar>

@@ -1,0 +1,79 @@
+<h1>{{ editId ? 'Edit recipe' : 'Add a new recipe' }}</h1>
+
+<form [formGroup]="form" (ngSubmit)="submit()" class="recipe-form">
+  <mat-form-field appearance="outline" class="full-width">
+    <mat-label>Recipe name</mat-label>
+    <input matInput formControlName="name" required />
+  </mat-form-field>
+
+  <div class="field-block">
+    <label class="field-label">Picture</label>
+    <mat-button-toggle-group formControlName="iconKey" class="icon-picker">
+      @for (icon of icons; track icon) {
+        <mat-button-toggle [value]="icon" [attr.aria-label]="icon">
+          <mat-icon>{{ icon }}</mat-icon>
+        </mat-button-toggle>
+      }
+    </mat-button-toggle-group>
+  </div>
+
+  <mat-form-field appearance="outline" class="full-width">
+    <mat-label>Cuisine</mat-label>
+    <mat-select formControlName="cuisine" required>
+      @for (cuisine of cuisines; track cuisine) {
+        <mat-option [value]="cuisine">{{ cuisine }}</mat-option>
+      }
+    </mat-select>
+  </mat-form-field>
+
+  <mat-form-field appearance="outline" class="full-width">
+    <mat-label>Cooking directions</mat-label>
+    <textarea matInput formControlName="directions" rows="5" required></textarea>
+  </mat-form-field>
+
+  <div class="field-block">
+    <label class="field-label">Ingredients</label>
+    <div formArrayName="ingredients" class="ingredient-rows">
+      @for (row of ingredients.controls; track row; let i = $index) {
+        <div [formGroupName]="i" class="ingredient-row">
+          <mat-form-field appearance="outline" class="ingredient-name">
+            <mat-label>Ingredient</mat-label>
+            <input matInput formControlName="name" required />
+          </mat-form-field>
+          <mat-form-field appearance="outline" class="ingredient-quantity">
+            <mat-label>Amount</mat-label>
+            <input matInput type="number" formControlName="quantity" min="0.01" step="0.01" required />
+          </mat-form-field>
+          <mat-form-field appearance="outline" class="ingredient-unit">
+            <mat-label>Unit</mat-label>
+            <mat-select formControlName="unit" required>
+              @for (unit of units; track unit) {
+                <mat-option [value]="unit">{{ unit }}</mat-option>
+              }
+            </mat-select>
+          </mat-form-field>
+          <button
+            mat-icon-button
+            type="button"
+            [disabled]="ingredients.length === 1"
+            (click)="removeIngredient(i)"
+            aria-label="Remove ingredient"
+          >
+            <mat-icon>delete</mat-icon>
+          </button>
+        </div>
+      }
+    </div>
+    <button mat-stroked-button type="button" (click)="addIngredient()">
+      <mat-icon>add</mat-icon>
+      Add ingredient
+    </button>
+  </div>
+
+  <div class="form-actions">
+    <a mat-button routerLink="/dashboard">Cancel</a>
+    <button mat-raised-button color="primary" type="submit">
+      {{ editId ? 'Save changes' : 'Save recipe' }}
+    </button>
+  </div>
+</form>
