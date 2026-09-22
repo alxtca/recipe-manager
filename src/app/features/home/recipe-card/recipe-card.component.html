@@ -1,4 +1,11 @@
-<mat-card class="recipe-card" appearance="outlined">
+<mat-card
+  class="recipe-card"
+  appearance="outlined"
+  [routerLink]="['/recipe', recipe().id]"
+  tabindex="0"
+  role="link"
+  [attr.aria-label]="'View ' + recipe().name"
+>
   <div class="recipe-picture">
     @if (recipe().iconKey) {
       <mat-icon class="recipe-icon">{{ recipe().iconKey }}</mat-icon>

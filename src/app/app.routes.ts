@@ -11,6 +11,11 @@ export const routes: Routes = [
     loadComponent: () => import('./features/auth/login/login.component').then((m) => m.LoginComponent),
   },
   {
+    path: 'recipe/:id',
+    loadComponent: () =>
+      import('./features/recipe-detail/recipe-detail.component').then((m) => m.RecipeDetailComponent),
+  },
+  {
     path: 'dashboard',
     canActivate: [authGuard],
     loadComponent: () =>
@@ -28,5 +33,9 @@ export const routes: Routes = [
     loadComponent: () =>
       import('./features/dashboard/recipe-form/recipe-form.component').then((m) => m.RecipeFormComponent),
   },
-  { path: '**', redirectTo: '' },
+  {
+    path: '**',
+    loadComponent: () =>
+      import('./features/not-found/not-found.component').then((m) => m.NotFoundComponent),
+  },
 ];
