@@ -10,6 +10,8 @@ Requirement specifications for Recipe Manager, one folder per feature. Each feat
 - [home](home/) — browsing, filtering, and sorting recipes
 - [authentication](authentication/) — demo-user login and access control
 - [recipe-management](recipe-management/) — adding, editing, and deleting recipes on the personal dashboard
+- [recipe-detail](recipe-detail/) — viewing a recipe's full details, scaling ingredients, and editing owned recipes
+- [application](application/) — cross-cutting app-wide behavior not owned by a single feature
 
 ## Platform-wide constraints
 

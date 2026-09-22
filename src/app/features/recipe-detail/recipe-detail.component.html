@@ -1,0 +1,49 @@
+@if (recipe(); as recipe) {
+  <div class="recipe-detail">
+    <div class="recipe-picture">
+      @if (recipe.iconKey) {
+        <mat-icon class="recipe-icon">{{ recipe.iconKey }}</mat-icon>
+      } @else {
+        <mat-icon class="recipe-icon placeholder">no_photography</mat-icon>
+      }
+    </div>
+
+    <div class="recipe-header">
+      <h1>{{ recipe.name }}</h1>
+      <p class="recipe-meta">{{ recipe.cuisine }} · Posted by {{ recipe.userName }}</p>
+      @if (isOwner()) {
+        <a mat-stroked-button [routerLink]="['/dashboard/edit', recipe.id]">
+          <mat-icon>edit</mat-icon>
+          Edit
+        </a>
+      }
+    </div>
+
+    <section class="recipe-section">
+      <div class="section-header">
+        <h2>Ingredients</h2>
+        <mat-button-toggle-group
+          [value]="portions()"
+          (change)="selectPortions($event.value)"
+          aria-label="Portions"
+        >
+          @for (option of portionOptions; track option) {
+            <mat-button-toggle [value]="option">{{ option }}x</mat-button-toggle>
+          }
+        </mat-button-toggle-group>
+      </div>
+      <ul class="ingredient-list">
+        @for (ingredient of scaledIngredients(); track ingredient.name) {
+          <li>{{ ingredient.quantity }} {{ ingredient.unit }} {{ ingredient.name }}</li>
+        }
+      </ul>
+    </section>
+
+    <section class="recipe-section">
+      <h2>Directions</h2>
+      <p class="directions">{{ recipe.directions }}</p>
+    </section>
+  </div>
+} @else {
+  <app-not-found></app-not-found>
+}

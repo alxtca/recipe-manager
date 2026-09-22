@@ -1,4 +1,5 @@
 import { TestBed } from '@angular/core/testing';
+import { provideRouter } from '@angular/router';
 import { HomeComponent } from './home.component';
 import { RecipeService } from '../../core/services/recipe.service';
 import { Recipe } from '../../core/models/recipe.model';
@@ -21,7 +22,7 @@ function makeRecipe(overrides: Partial<Recipe> & { id: string }): Recipe {
 describe('HomeComponent', () => {
   beforeEach(() => {
     localStorage.clear();
-    TestBed.configureTestingModule({ imports: [HomeComponent] });
+    TestBed.configureTestingModule({ imports: [HomeComponent], providers: [provideRouter([])] });
   });
 
   function setRecipes(recipes: Recipe[]): HomeComponent {
