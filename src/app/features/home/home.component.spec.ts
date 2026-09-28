@@ -2,6 +2,7 @@ import { TestBed } from '@angular/core/testing';
 import { provideRouter } from '@angular/router';
 import { HomeComponent } from './home.component';
 import { RecipeService } from '../../core/services/recipe.service';
+import { AuthService } from '../../core/services/auth.service';
 import { Recipe } from '../../core/models/recipe.model';
 import { DEFAULT_FILTER_STATE } from './filter-state.model';
 
@@ -15,6 +16,7 @@ function makeRecipe(overrides: Partial<Recipe> & { id: string }): Recipe {
     userId: 'u1',
     userName: 'Alice',
     createdAt: '2026-01-01T00:00:00.000Z',
+    ratings: {},
     ...overrides,
   };
 }
@@ -117,5 +119,76 @@ describe('HomeComponent', () => {
 
     component.onFilterChange({ ...DEFAULT_FILTER_STATE, sort: 'oldest' });
     expect(component.sortedRecipes().map((r) => r.id)).toEqual(['old', 'new']);
+  });
+
+  it('[recipe-rating-10] filters by minimum average rating and hides unrated recipes', () => {
+    const recipes = [
+      makeRecipe({ id: 'high', ratings: { u1: 8, u2: 7 } }),
+      makeRecipe({ id: 'exact', ratings: { u1: 7 } }),
+      makeRecipe({ id: 'low', ratings: { u1: 6, u2: 7 } }),
+      makeRecipe({ id: 'unrated' }),
+    ];
+    const component = setRecipes(recipes);
+
+    component.onFilterChange({ ...DEFAULT_FILTER_STATE, minRating: 7 });
+
+    expect(component.filteredRecipes().map((r) => r.id)).toEqual(['high', 'exact']);
+  });
+
+  it('[recipe-rating-11] combines the rating filter with other filters', () => {
+    const recipes = [
+      makeRecipe({ id: 'thai-high', cuisine: 'Thai', ratings: { u1: 9 } }),
+      makeRecipe({ id: 'thai-low', cuisine: 'Thai', ratings: { u1: 3 } }),
+      makeRecipe({ id: 'italian-high', cuisine: 'Italian', ratings: { u1: 9 } }),
+    ];
+    const component = setRecipes(recipes);
+
+    component.onFilterChange({ ...DEFAULT_FILTER_STATE, cuisine: 'Thai', minRating: 5 });
+
+    expect(component.filteredRecipes().map((r) => r.id)).toEqual(['thai-high']);
+  });
+
+  it('[recipe-rating-12] sorts by rating, highest first, unrated last, ties newest first', () => {
+    const recipes = [
+      makeRecipe({ id: 'unrated', createdAt: '2026-09-01T00:00:00.000Z' }),
+      makeRecipe({ id: 'mid-old', ratings: { u1: 6 }, createdAt: '2026-01-01T00:00:00.000Z' }),
+      makeRecipe({ id: 'top', ratings: { u1: 10, u2: 8 }, createdAt: '2026-02-01T00:00:00.000Z' }),
+      makeRecipe({ id: 'mid-new', ratings: { u1: 6 }, createdAt: '2026-03-01T00:00:00.000Z' }),
+    ];
+    const component = setRecipes(recipes);
+
+    component.onFilterChange({ ...DEFAULT_FILTER_STATE, sort: 'rating' });
+
+    expect(component.sortedRecipes().map((r) => r.id)).toEqual(['top', 'mid-new', 'mid-old', 'unrated']);
+  });
+
+  it('[recipe-rating-13] keeps date added (newest first) as the default sort when recipes are rated', () => {
+    const recipes = [
+      makeRecipe({ id: 'old-top', ratings: { u1: 10 }, createdAt: '2026-01-01T00:00:00.000Z' }),
+      makeRecipe({ id: 'new-low', ratings: { u1: 1 }, createdAt: '2026-06-01T00:00:00.000Z' }),
+    ];
+    const component = setRecipes(recipes);
+
+    expect(component.sortedRecipes().map((r) => r.id)).toEqual(['new-low', 'old-top']);
+  });
+
+  it('[recipe-rating-5, recipe-rating-6] saves a rating given on a card for the logged-in user', () => {
+    const component = setRecipes([makeRecipe({ id: 'r1', ratings: { u2: 4 } })]);
+    TestBed.inject(AuthService).login({ id: 'u1', name: 'Alice' });
+    const recipeService = TestBed.inject(RecipeService);
+
+    component.onRate('r1', 8);
+    expect(recipeService.getById('r1')?.ratings).toEqual({ u2: 4, u1: 8 });
+
+    component.onRate('r1', 5);
+    expect(recipeService.getById('r1')?.ratings).toEqual({ u2: 4, u1: 5 });
+  });
+
+  it('[recipe-rating-4] ignores rating attempts from anonymous users', () => {
+    const component = setRecipes([makeRecipe({ id: 'r1' })]);
+
+    component.onRate('r1', 8);
+
+    expect(TestBed.inject(RecipeService).getById('r1')?.ratings).toEqual({});
   });
 });

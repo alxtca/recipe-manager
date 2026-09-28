@@ -20,6 +20,17 @@
   </mat-card-header>
 
   <mat-card-content>
+    <!-- Rating controls must not trigger the card's navigation to the detail page. -->
+    <div class="card-rating" (click)="$event.stopPropagation()" (keydown)="$event.stopPropagation()">
+      <app-recipe-rating
+        [average]="average()"
+        [count]="count()"
+        [userRating]="userRating()"
+        [canRate]="!!currentUserId()"
+        (rated)="rate.emit($event)"
+      ></app-recipe-rating>
+    </div>
+
     <div class="ingredient-chips">
       @for (ingredient of recipe().ingredients; track ingredient.name) {
         <mat-chip disabled>{{ ingredient.name }}</mat-chip>

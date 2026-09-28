@@ -12,7 +12,11 @@
     @if (pagedRecipes().length) {
       <div class="recipe-grid">
         @for (recipe of pagedRecipes(); track recipe.id) {
-          <app-recipe-card [recipe]="recipe"></app-recipe-card>
+          <app-recipe-card
+            [recipe]="recipe"
+            [currentUserId]="currentUserId()"
+            (rate)="onRate(recipe.id, $event)"
+          ></app-recipe-card>
         }
       </div>
     } @else {

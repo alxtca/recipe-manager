@@ -31,6 +31,8 @@ export const RECIPE_ICONS: string[] = [
   'coffee',
 ];
 
+export const RATING_VALUES: number[] = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10];
+
 export const DEMO_USERS: User[] = [
   { id: 'u1', name: 'Alice' },
   { id: 'u2', name: 'Bob' },
@@ -43,7 +45,7 @@ function userName(userId: string): string {
   return DEMO_USERS.find((u) => u.id === userId)?.name ?? 'Unknown';
 }
 
-const seed: Omit<Recipe, 'userName'>[] = [
+const seed: Omit<Recipe, 'userName' | 'ratings'>[] = [
   {
     id: 'r1',
     name: 'Margherita Pizza',
@@ -198,4 +200,16 @@ const seed: Omit<Recipe, 'userName'>[] = [
   },
 ];
 
-export const SEED_RECIPES: Recipe[] = seed.map((r) => ({ ...r, userName: userName(r.userId) }));
+const SEED_RATINGS: Record<string, Record<string, number>> = {
+  r1: { u2: 9, u3: 8, u4: 10 },
+  r2: { u1: 6, u5: 7 },
+  r4: { u1: 8 },
+  r7: { u2: 4, u3: 5 },
+  r10: { u1: 10, u2: 9, u3: 9, u4: 8 },
+};
+
+export const SEED_RECIPES: Recipe[] = seed.map((r) => ({
+  ...r,
+  userName: userName(r.userId),
+  ratings: SEED_RATINGS[r.id] ?? {},
+}));

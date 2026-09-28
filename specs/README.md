@@ -36,3 +36,15 @@ These apply across all features rather than to any single one:
 3. In a separate step, ask Claude to implement it (e.g. "implement recipe-rating"). It runs the
    `implement-the-feature` skill: it proposes a plan mapped to the `.feature` scenarios, implements
    the feature after you approve the plan, adds tests for each scenario, and reports coverage.
+
+## Changing an existing feature
+
+1. Describe the change to Claude (e.g. "change recipe-rating so that clicking outside cancels the
+   edit").
+2. Claude runs the `change-feature-spec` skill. It asks clarifying questions and sorts the change
+   into modified, added and removed scenarios, keeping existing IDs stable (removed IDs are
+   recorded as retired so they're never reused). It checks for conflicts within the feature,
+   with other specs and with the current code, and lists the tests and code affected. It updates
+   the spec after you approve the draft.
+3. In a separate step, ask Claude to implement the change (e.g. "implement the recipe-rating
+   changes"). It runs the `implement-the-feature` skill against the updated scenarios.

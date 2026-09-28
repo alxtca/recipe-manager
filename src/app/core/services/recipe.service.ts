@@ -24,6 +24,7 @@ export class RecipeService {
       userId: user.id,
       userName: user.name,
       createdAt: new Date().toISOString(),
+      ratings: {},
     };
     this.recipes.update((list) => [...list, recipe]);
     this.persist();
@@ -33,6 +34,13 @@ export class RecipeService {
   update(id: string, input: RecipeInput): void {
     this.recipes.update((list) =>
       list.map((r) => (r.id === id ? { ...r, ...input } : r)),
+    );
+    this.persist();
+  }
+
+  rate(id: string, userId: string, score: number): void {
+    this.recipes.update((list) =>
+      list.map((r) => (r.id === id ? { ...r, ratings: { ...r.ratings, [userId]: score } } : r)),
     );
     this.persist();
   }
@@ -53,7 +61,8 @@ export class RecipeService {
     }
     try {
       const parsed = JSON.parse(raw) as Recipe[];
-      return Array.isArray(parsed) ? parsed : SEED_RECIPES;
+      // Recipes saved before ratings existed have no `ratings` field.
+      return Array.isArray(parsed) ? parsed.map((r) => ({ ...r, ratings: r.ratings ?? {} })) : SEED_RECIPES;
     } catch {
       return SEED_RECIPES;
     }

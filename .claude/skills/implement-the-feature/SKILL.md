@@ -5,10 +5,11 @@ description: >-
   (description.md + <feature-name>.feature), treating the Gherkin scenarios as the contract.
   Use this whenever the developer asks to implement, build, or code a feature that has a spec —
   e.g. "implement recipe-rating", "build the recipe-detail feature", "start implementation of X",
-  "code up the spec for Y". Plans the work against the scenarios, gets approval, implements
-  following the architecture in CLAUDE.md, writes behavior-level specs per scenario, runs the tests
-  and build, and reports scenario coverage. Does not write or change specs — that's
-  new-feature-spec's job.
+  "code up the spec for Y". Also use it to implement changes made to an existing feature's spec,
+  e.g. "implement the recipe-rating changes". Plans the work against the scenarios, gets approval,
+  implements following the architecture in CLAUDE.md, writes behavior-level specs per scenario,
+  runs the tests and build, and reports scenario coverage. Does not write or change specs — that's
+  the job of new-feature-spec (new features) and change-feature-spec (changes to existing ones).
 ---
 
 # Implement the Feature
@@ -42,8 +43,13 @@ Read:
 
 If a scenario is ambiguous or contradicts the current code or another spec, ask the developer
 before planning around it. Don't pick an interpretation silently, and don't edit the spec
-yourself. If the spec needs to change, the developer decides that (and may re-run
-`new-feature-spec`).
+yourself. If the spec needs to change, the developer decides that (and may run
+`change-feature-spec`).
+
+When you're implementing a change to an already-implemented feature, start from the scenario IDs
+that were modified, added or removed. Search `src/` for `[<id>` to find the tests and code
+built against them. Tests for retired IDs are deleted or re-tagged, and tests for modified IDs
+get updated assertions. Don't keep an old assertion that the new scenario contradicts.
 
 ### 3. Plan and get approval
 
