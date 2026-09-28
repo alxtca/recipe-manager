@@ -56,20 +56,24 @@ export class RecipeFormComponent implements OnInit {
   ngOnInit(): void {
     this.editId = this.route.snapshot.paramMap.get('id');
     if (this.editId) {
-      const recipe = this.recipeService.getById(this.editId);
-      if (!recipe || recipe.userId !== this.auth.currentUser()?.id) {
-        this.router.navigateByUrl('/dashboard');
-        return;
-      }
-      this.ingredients.clear();
-      recipe.ingredients.forEach((ingredient) => this.ingredients.push(this.createIngredientRow(ingredient)));
-      this.form.patchValue({
-        name: recipe.name,
-        iconKey: recipe.iconKey ?? '',
-        cuisine: recipe.cuisine,
-        directions: recipe.directions,
-      });
+      this.loadOwnRecipeIntoFormOrRedirect(this.editId);
     }
+  }
+
+  private loadOwnRecipeIntoFormOrRedirect(id: string): void {
+    const recipe = this.recipeService.getById(id);
+    if (!recipe || recipe.userId !== this.auth.currentUser()?.id) {
+      this.router.navigateByUrl('/dashboard');
+      return;
+    }
+    this.ingredients.clear();
+    recipe.ingredients.forEach((ingredient) => this.ingredients.push(this.createIngredientRow(ingredient)));
+    this.form.patchValue({
+      name: recipe.name,
+      iconKey: recipe.iconKey ?? '',
+      cuisine: recipe.cuisine,
+      directions: recipe.directions,
+    });
   }
 
   createIngredientRow(value?: { name: string; quantity: number; unit: string }) {
