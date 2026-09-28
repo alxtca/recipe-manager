@@ -1,6 +1,8 @@
 import { Component, computed, inject, signal } from '@angular/core';
 import { MatPaginatorModule, PageEvent } from '@angular/material/paginator';
 import { RecipeService } from '../../core/services/recipe.service';
+import { AuthService } from '../../core/services/auth.service';
+import { averageRating } from '../../core/utils/rating';
 import { RecipeCardComponent } from './recipe-card/recipe-card.component';
 import { RecipeFilterComponent } from './recipe-filter/recipe-filter.component';
 import { DEFAULT_FILTER_STATE, FilterState } from './filter-state.model';
@@ -18,6 +20,9 @@ const PAGE_SIZE = 21;
 })
 export class HomeComponent {
   private readonly recipeService = inject(RecipeService);
+  private readonly auth = inject(AuthService);
+
+  readonly currentUserId = computed(() => this.auth.currentUser()?.id ?? null);
 
   readonly filter = signal<FilterState>(DEFAULT_FILTER_STATE);
   readonly currentPage = signal(0);
@@ -50,9 +55,17 @@ export class HomeComponent {
 
   readonly sortedRecipes = computed<Recipe[]>(() => {
     const state = this.filter();
-    const sorted = [...this.filteredRecipes()].sort(
-      (a, b) => new Date(a.createdAt).getTime() - new Date(b.createdAt).getTime(),
-    );
+    const byDate = (a: Recipe, b: Recipe) =>
+      new Date(a.createdAt).getTime() - new Date(b.createdAt).getTime();
+
+    if (state.sort === 'rating') {
+      // Highest average first, unrated last, ties newest first.
+      return [...this.filteredRecipes()].sort((a, b) => {
+        const diff = (averageRating(b) ?? -1) - (averageRating(a) ?? -1);
+        return diff !== 0 ? diff : byDate(b, a);
+      });
+    }
+    const sorted = [...this.filteredRecipes()].sort(byDate);
     return state.sort === 'newest' ? sorted.reverse() : sorted;
   });
 
@@ -78,6 +91,13 @@ export class HomeComponent {
     this.currentPage.set(event.pageIndex);
   }
 
+  onRate(recipeId: string, score: number): void {
+    const userId = this.currentUserId();
+    if (userId) {
+      this.recipeService.rate(recipeId, userId, score);
+    }
+  }
+
   private matches(recipe: Recipe, state: FilterState): boolean {
     if (state.userId && recipe.userId !== state.userId) {
       return false;
@@ -91,6 +111,12 @@ export class HomeComponent {
     }
     if (state.excludeIngredients.length && state.excludeIngredients.some((n) => ingredientNames.includes(n))) {
       return false;
+    }
+    if (state.minRating !== null) {
+      const average = averageRating(recipe);
+      if (average === null || average < state.minRating) {
+        return false;
+      }
     }
     return true;
   }

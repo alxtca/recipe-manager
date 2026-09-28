@@ -1,0 +1,31 @@
+.recipe-rating {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 4px;
+  min-height: 40px;
+}
+
+.rating-star {
+  color: #f5a623;
+  font-size: 20px;
+  height: 20px;
+  width: 20px;
+}
+
+.rating-average {
+  font-weight: 500;
+
+  &.unrated {
+    font-weight: normal;
+    opacity: 0.7;
+  }
+}
+
+.rating-own {
+  opacity: 0.8;
+}
+
+.rating-select {
+  width: 140px;
+}

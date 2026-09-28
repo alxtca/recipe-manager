@@ -7,7 +7,7 @@ import { MatAutocompleteModule, MatAutocompleteSelectedEvent } from '@angular/ma
 import { MatChipsModule, MatChipInputEvent } from '@angular/material/chips';
 import { FormControl, ReactiveFormsModule } from '@angular/forms';
 import { User } from '../../../core/models/user.model';
-import { CUISINES } from '../../../core/data/constants';
+import { CUISINES, RATING_VALUES } from '../../../core/data/constants';
 import { DEFAULT_FILTER_STATE, FilterState, SortDirection } from '../filter-state.model';
 
 @Component({
@@ -32,6 +32,7 @@ export class RecipeFilterComponent {
   readonly filterChange = output<FilterState>();
 
   readonly cuisines = CUISINES;
+  readonly ratingValues = RATING_VALUES;
   readonly includeControl = new FormControl('');
   readonly excludeControl = new FormControl('');
 
@@ -55,6 +56,10 @@ export class RecipeFilterComponent {
 
   onCuisineChange(cuisine: string | null): void {
     this.emit({ ...this.filter(), cuisine: cuisine || null });
+  }
+
+  onMinRatingChange(minRating: number | null): void {
+    this.emit({ ...this.filter(), minRating: minRating ?? null });
   }
 
   onSortChange(sort: SortDirection): void {

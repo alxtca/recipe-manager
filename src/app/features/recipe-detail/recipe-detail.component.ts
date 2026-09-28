@@ -6,14 +6,16 @@ import { MatButtonToggleModule } from '@angular/material/button-toggle';
 import { RecipeService } from '../../core/services/recipe.service';
 import { AuthService } from '../../core/services/auth.service';
 import { Ingredient } from '../../core/models/recipe.model';
+import { averageRating, ratingCount } from '../../core/utils/rating';
 import { NotFoundComponent } from '../not-found/not-found.component';
+import { RecipeRatingComponent } from '../../shared/recipe-rating/recipe-rating.component';
 
 const PORTION_OPTIONS = [0.5, 1, 2, 3, 4];
 
 @Component({
   selector: 'app-recipe-detail',
   standalone: true,
-  imports: [RouterLink, MatIconModule, MatButtonModule, MatButtonToggleModule, NotFoundComponent],
+  imports: [RouterLink, MatIconModule, MatButtonModule, MatButtonToggleModule, NotFoundComponent, RecipeRatingComponent],
   templateUrl: './recipe-detail.component.html',
   styleUrl: './recipe-detail.component.scss',
 })
@@ -46,7 +48,31 @@ export class RecipeDetailComponent {
     return !!recipe && recipe.userId === this.auth.currentUser()?.id;
   });
 
+  readonly currentUserId = computed(() => this.auth.currentUser()?.id ?? null);
+
+  readonly average = computed(() => {
+    const recipe = this.recipe();
+    return recipe ? averageRating(recipe) : null;
+  });
+
+  readonly ratingCount = computed(() => {
+    const recipe = this.recipe();
+    return recipe ? ratingCount(recipe) : 0;
+  });
+
+  readonly userRating = computed(() => {
+    const userId = this.currentUserId();
+    return userId ? (this.recipe()?.ratings[userId] ?? null) : null;
+  });
+
   selectPortions(value: number): void {
     this.portions.set(value);
+  }
+
+  rate(score: number): void {
+    const userId = this.currentUserId();
+    if (userId) {
+      this.recipeService.rate(this.id, userId, score);
+    }
   }
 }

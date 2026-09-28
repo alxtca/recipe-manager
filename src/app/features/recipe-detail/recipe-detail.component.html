@@ -11,6 +11,14 @@
     <div class="recipe-header">
       <h1>{{ recipe.name }}</h1>
       <p class="recipe-meta">{{ recipe.cuisine }} · Posted by {{ recipe.userName }}</p>
+      <app-recipe-rating
+        class="recipe-rating"
+        [average]="average()"
+        [count]="ratingCount()"
+        [userRating]="userRating()"
+        [canRate]="!!currentUserId()"
+        (rated)="rate($event)"
+      ></app-recipe-rating>
       @if (isOwner()) {
         <a mat-stroked-button [routerLink]="['/dashboard/edit', recipe.id]">
           <mat-icon>edit</mat-icon>

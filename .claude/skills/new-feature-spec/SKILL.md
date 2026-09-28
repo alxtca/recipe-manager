@@ -98,4 +98,4 @@ platform-wide constraint (rare — most things belong in the feature's own scope
 
 The skill's job ends when the spec is written and README is updated. Don't start implementing
 components/services/routing in the same pass — that's a separate task the developer will kick off
-deliberately, using the finished spec as the contract.
+deliberately (via the `implement-the-feature` skill), using the finished spec as the contract.

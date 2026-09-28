@@ -1,0 +1,28 @@
+<div class="recipe-rating">
+  @if (editing()) {
+    <mat-form-field appearance="outline" class="rating-select" subscriptSizing="dynamic">
+      <mat-label>Your rating</mat-label>
+      <mat-select [value]="userRating()" (selectionChange)="select($event.value)">
+        @for (value of ratingValues; track value) {
+          <mat-option [value]="value">{{ value }}</mat-option>
+        }
+      </mat-select>
+    </mat-form-field>
+  } @else {
+    <mat-icon class="rating-star">star</mat-icon>
+    @if (average() !== null) {
+      <span class="rating-average">{{ average() | number: '1.1-1' }} ({{ count() }})</span>
+    } @else {
+      <span class="rating-average unrated">Not rated yet</span>
+    }
+
+    @if (canRate()) {
+      @if (hasRated()) {
+        <span class="rating-own">· Your rating: {{ userRating() }}</span>
+        <button mat-button type="button" (click)="startEditing()">Edit</button>
+      } @else {
+        <button mat-button type="button" (click)="startEditing()">Rate</button>
+      }
+    }
+  }
+</div>

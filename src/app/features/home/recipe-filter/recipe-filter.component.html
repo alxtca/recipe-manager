@@ -22,10 +22,21 @@
   </mat-form-field>
 
   <mat-form-field appearance="outline" class="full-width">
-    <mat-label>Sort by date added</mat-label>
+    <mat-label>Minimum rating</mat-label>
+    <mat-select [value]="filter().minRating" (selectionChange)="onMinRatingChange($event.value)">
+      <mat-option [value]="null">Any rating</mat-option>
+      @for (value of ratingValues; track value) {
+        <mat-option [value]="value">{{ value }} or higher</mat-option>
+      }
+    </mat-select>
+  </mat-form-field>
+
+  <mat-form-field appearance="outline" class="full-width">
+    <mat-label>Sort by</mat-label>
     <mat-select [value]="filter().sort" (selectionChange)="onSortChange($event.value)">
       <mat-option value="newest">Newest first</mat-option>
       <mat-option value="oldest">Oldest first</mat-option>
+      <mat-option value="rating">Highest rated</mat-option>
     </mat-select>
   </mat-form-field>
 

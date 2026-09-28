@@ -14,6 +14,8 @@ export interface Recipe {
   userId: string;
   userName: string;
   createdAt: string;
+  /** Scores keyed by user id — one rating per user per recipe. */
+  ratings: Record<string, number>;
 }
 
-export type RecipeInput = Omit<Recipe, 'id' | 'userId' | 'userName' | 'createdAt'>;
+export type RecipeInput = Omit<Recipe, 'id' | 'userId' | 'userName' | 'createdAt' | 'ratings'>;
