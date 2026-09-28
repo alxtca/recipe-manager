@@ -5,6 +5,12 @@ Requirement specifications for Recipe Manager, one folder per feature. Each feat
 - `description.md` — prose description of the feature and its scope
 - `<feature>.feature` — Gherkin scenarios for the feature
 
+## Requirement IDs
+
+Every scenario carries a unique ID as a Gherkin tag of the form `@<feature-file-name>-<number>` (e.g. `@home-4` is the 4th scenario in `home/home.feature`). Numbers are sequential per file; never renumber existing scenarios — append new ones with the next free number.
+
+Unit tests reference the requirement(s) they verify by prefixing the `it()` description with the ID(s) in brackets, e.g. `it('[home-4] filters by user', ...)` or `it('[recipe-detail-3, recipe-detail-4] ...', ...)`.
+
 ## Features
 
 - [home](home/) — browsing, filtering, and sorting recipes

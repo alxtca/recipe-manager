@@ -7,6 +7,7 @@ Feature: Authentication
   Background:
     Given the Recipe Manager application is available
 
+  @authentication-1
   Scenario: Log in as a demo user
     Given I am not logged in
     When I open the login screen
@@ -14,6 +15,7 @@ Feature: Authentication
     Then I should be logged in as that user
     And my session should be remembered if I refresh the page
 
+  @authentication-2
   Scenario: Anonymous users cannot add recipes
     Given I am not logged in
     When I access the application

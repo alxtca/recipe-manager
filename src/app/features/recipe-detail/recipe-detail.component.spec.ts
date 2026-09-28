@@ -31,7 +31,7 @@ function configure(id: string) {
 describe('RecipeDetailComponent', () => {
   beforeEach(() => localStorage.clear());
 
-  it('shows the recipe when the id exists', () => {
+  it('[recipe-detail-2] shows the recipe when the id exists', () => {
     configure('r1');
     TestBed.inject(RecipeService).recipes.set([makeRecipe({ id: 'r1' })]);
 
@@ -41,7 +41,7 @@ describe('RecipeDetailComponent', () => {
     expect(fixture.componentInstance.recipe()?.id).toBe('r1');
   });
 
-  it('has no recipe when the id does not exist', () => {
+  it('[application-2] has no recipe when the id does not exist', () => {
     configure('missing');
     TestBed.inject(RecipeService).recipes.set([makeRecipe({ id: 'r1' })]);
 
@@ -51,7 +51,7 @@ describe('RecipeDetailComponent', () => {
     expect(fixture.componentInstance.recipe()).toBeUndefined();
   });
 
-  it('defaults to 1x portions and scales ingredient quantities', () => {
+  it('[recipe-detail-3, recipe-detail-4, recipe-detail-5] defaults to 1x portions and scales ingredient quantities', () => {
     configure('r1');
     TestBed.inject(RecipeService).recipes.set([
       makeRecipe({ id: 'r1', ingredients: [{ name: 'Flour', quantity: 100, unit: 'g' }] }),
@@ -71,7 +71,7 @@ describe('RecipeDetailComponent', () => {
     expect(component.scaledIngredients()).toEqual([{ name: 'Flour', quantity: 50, unit: 'g' }]);
   });
 
-  it('shows edit access only to the recipe owner', () => {
+  it('[recipe-detail-6, recipe-detail-7, recipe-detail-8] shows edit access only to the recipe owner', () => {
     configure('r1');
     TestBed.inject(RecipeService).recipes.set([makeRecipe({ id: 'r1', userId: 'u1' })]);
     const auth = TestBed.inject(AuthService);

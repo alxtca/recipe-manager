@@ -17,12 +17,12 @@ describe('RecipeService', () => {
     TestBed.configureTestingModule({});
   });
 
-  it('seeds recipes when nothing is persisted', () => {
+  it('[home-2] seeds recipes when nothing is persisted', () => {
     const service = TestBed.inject(RecipeService);
     expect(service.recipes().length).toBe(SEED_RECIPES.length);
   });
 
-  it('adds a recipe attributed to the given user and persists it', () => {
+  it('[recipe-management-2] adds a recipe attributed to the given user and persists it', () => {
     const service = TestBed.inject(RecipeService);
     const user = { id: 'u1', name: 'Alice' };
 
@@ -36,7 +36,7 @@ describe('RecipeService', () => {
     expect(persisted.length).toBe(SEED_RECIPES.length + 1);
   });
 
-  it('updates an existing recipe', () => {
+  it('[recipe-management-3] updates an existing recipe', () => {
     const service = TestBed.inject(RecipeService);
     const user = { id: 'u1', name: 'Alice' };
     const created = service.add(NEW_RECIPE, user);
@@ -46,7 +46,7 @@ describe('RecipeService', () => {
     expect(service.getById(created.id)?.name).toBe('Updated Soup');
   });
 
-  it('deletes a recipe', () => {
+  it('[recipe-management-4] deletes a recipe', () => {
     const service = TestBed.inject(RecipeService);
     const user = { id: 'u1', name: 'Alice' };
     const created = service.add(NEW_RECIPE, user);
@@ -56,7 +56,7 @@ describe('RecipeService', () => {
     expect(service.getById(created.id)).toBeUndefined();
   });
 
-  it('loads persisted recipes on a fresh instance', () => {
+  it('[recipe-management-2] loads persisted recipes on a fresh instance', () => {
     const service = TestBed.inject(RecipeService);
     const user = { id: 'u1', name: 'Alice' };
     service.add(NEW_RECIPE, user);
