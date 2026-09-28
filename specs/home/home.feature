@@ -8,48 +8,57 @@ Feature: Recipe browsing, filtering, and sorting
     Given the Recipe Manager application is available
     And the application can be used without authentication
 
+  @home-1
   Scenario: Browse recipes on the homepage
     Given I open the homepage
     Then I should see a recipe list displayed in 3 columns
     And I should see a maximum of 21 recipe cards per page
 
+  @home-2
   Scenario: View recipe information on a card
     Given recipes exist in the application
     When I view the recipe list
     Then each recipe card should display the recipe name
     And each recipe card should display a picture icon when one is available
 
+  @home-3
   Scenario: Display pagination when more than 21 recipes exist
     Given there are more than 21 recipes
     When I open the homepage
     Then pagination controls should be displayed
     And only 21 recipe cards should be shown on a page
 
+  @home-4
   Scenario: Filter recipes by user
     Given recipes exist from multiple users
     When I filter recipes by a specific user
     Then only recipes created by that user should be displayed
 
+  @home-5
   Scenario: Filter recipes by cuisine type
     Given recipes exist with different cuisine types
     When I filter recipes by a cuisine type
     Then only recipes matching the selected cuisine type should be displayed
 
+  @home-6
   Scenario: Filter recipes by ingredients
     Given recipes exist with different ingredients
     When I filter recipes using one or more ingredients
     Then only recipes containing all of those ingredients should be displayed
 
+  @home-7
   Scenario: Exclude recipes containing specific ingredients
     Given recipes exist with different ingredients
     When I exclude one or more ingredients from the search
     Then recipes containing any of the excluded ingredients should not be displayed
 
+  @home-8
   Scenario: Combine multiple filters
     Given recipes exist from multiple users, cuisines, and ingredients
     When I apply a user filter, a cuisine filter, and an ingredient filter together
     Then only recipes matching all of the selected filters should be displayed
 
+  @home-9
   Scenario: Sort recipes by creation date
     Given recipes exist in the application
     When I sort recipes by date added

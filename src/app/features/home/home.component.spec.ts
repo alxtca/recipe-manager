@@ -33,7 +33,7 @@ describe('HomeComponent', () => {
     return fixture.componentInstance;
   }
 
-  it('does not show pagination for 21 or fewer recipes', () => {
+  it('[home-1, home-3] does not show pagination for 21 or fewer recipes', () => {
     const recipes = Array.from({ length: 21 }, (_, i) => makeRecipe({ id: `r${i}` }));
     const component = setRecipes(recipes);
 
@@ -41,7 +41,7 @@ describe('HomeComponent', () => {
     expect(component.pagedRecipes().length).toBe(21);
   });
 
-  it('shows pagination and pages results for more than 21 recipes', () => {
+  it('[home-3] shows pagination and pages results for more than 21 recipes', () => {
     const recipes = Array.from({ length: 25 }, (_, i) => makeRecipe({ id: `r${i}` }));
     const component = setRecipes(recipes);
 
@@ -52,7 +52,7 @@ describe('HomeComponent', () => {
     expect(component.pagedRecipes().length).toBe(4);
   });
 
-  it('filters by user', () => {
+  it('[home-4] filters by user', () => {
     const recipes = [
       makeRecipe({ id: 'r1', userId: 'u1', userName: 'Alice' }),
       makeRecipe({ id: 'r2', userId: 'u2', userName: 'Bob' }),
@@ -64,7 +64,7 @@ describe('HomeComponent', () => {
     expect(component.filteredRecipes().map((r) => r.id)).toEqual(['r2']);
   });
 
-  it('filters by cuisine', () => {
+  it('[home-5] filters by cuisine', () => {
     const recipes = [
       makeRecipe({ id: 'r1', cuisine: 'Italian' }),
       makeRecipe({ id: 'r2', cuisine: 'Thai' }),
@@ -76,7 +76,7 @@ describe('HomeComponent', () => {
     expect(component.filteredRecipes().map((r) => r.id)).toEqual(['r2']);
   });
 
-  it('filters by included ingredients (must contain all)', () => {
+  it('[home-6] filters by included ingredients (must contain all)', () => {
     const recipes = [
       makeRecipe({ id: 'r1', ingredients: [{ name: 'Egg', quantity: 1, unit: 'pcs' }] }),
       makeRecipe({
@@ -94,7 +94,7 @@ describe('HomeComponent', () => {
     expect(component.filteredRecipes().map((r) => r.id)).toEqual(['r2']);
   });
 
-  it('excludes recipes containing any excluded ingredient', () => {
+  it('[home-7] excludes recipes containing any excluded ingredient', () => {
     const recipes = [
       makeRecipe({ id: 'r1', ingredients: [{ name: 'Peanuts', quantity: 1, unit: 'g' }] }),
       makeRecipe({ id: 'r2', ingredients: [{ name: 'Rice', quantity: 1, unit: 'g' }] }),
@@ -106,7 +106,7 @@ describe('HomeComponent', () => {
     expect(component.filteredRecipes().map((r) => r.id)).toEqual(['r2']);
   });
 
-  it('sorts by creation date, newest first by default', () => {
+  it('[home-9] sorts by creation date, newest first by default', () => {
     const recipes = [
       makeRecipe({ id: 'old', createdAt: '2026-01-01T00:00:00.000Z' }),
       makeRecipe({ id: 'new', createdAt: '2026-06-01T00:00:00.000Z' }),

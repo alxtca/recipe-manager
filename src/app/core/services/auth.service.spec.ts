@@ -8,12 +8,12 @@ describe('AuthService', () => {
     TestBed.configureTestingModule({});
   });
 
-  it('starts logged out when nothing is persisted', () => {
+  it('[authentication-2] starts logged out when nothing is persisted', () => {
     const service = TestBed.inject(AuthService);
     expect(service.currentUser()).toBeNull();
   });
 
-  it('logs in and persists the current user', () => {
+  it('[authentication-1] logs in and persists the current user', () => {
     const service = TestBed.inject(AuthService);
     service.login(DEMO_USERS[0]);
 
@@ -21,7 +21,7 @@ describe('AuthService', () => {
     expect(JSON.parse(localStorage.getItem('rm-current-user')!)).toEqual(DEMO_USERS[0]);
   });
 
-  it('logs out and clears persisted user', () => {
+  it('[authentication-1] logs out and clears persisted user', () => {
     const service = TestBed.inject(AuthService);
     service.login(DEMO_USERS[0]);
     service.logout();
@@ -30,7 +30,7 @@ describe('AuthService', () => {
     expect(localStorage.getItem('rm-current-user')).toBeNull();
   });
 
-  it('restores the logged-in user from localStorage on init', () => {
+  it('[authentication-1] restores the logged-in user from localStorage on init', () => {
     localStorage.setItem('rm-current-user', JSON.stringify(DEMO_USERS[1]));
     const service = TestBed.inject(AuthService);
 

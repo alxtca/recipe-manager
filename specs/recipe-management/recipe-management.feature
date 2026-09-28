@@ -7,11 +7,13 @@ Feature: Recipe management
   Background:
     Given I am logged in
 
+  @recipe-management-1
   Scenario: Access personal dashboard as an authenticated user
     Given I am logged in
     When I access my dashboard
     Then I should have access to my personal dashboard
 
+  @recipe-management-2
   Scenario: Add a new recipe
     Given I am on my personal dashboard
     When I create a new recipe
@@ -22,12 +24,14 @@ Feature: Recipe management
     Then the recipe should be saved
     And the recipe should be available in the recipe list
 
+  @recipe-management-3
   Scenario: Edit an existing recipe
     Given I have a recipe of my own on my personal dashboard
     When I edit that recipe's details
     Then the updated recipe should be saved
     And the recipe list should reflect the changes
 
+  @recipe-management-4
   Scenario: Delete an existing recipe
     Given I have a recipe of my own on my personal dashboard
     When I delete that recipe

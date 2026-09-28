@@ -14,7 +14,7 @@ ng test --include='**/recipe.service.spec.ts'     # run a single spec file
 
 There is no e2e test setup and no lint script configured.
 
-Tests target requirements/behavior, not individual functions — see `home.component.spec.ts` for the pattern (one `it()` per user-facing filtering/pagination/sorting behavior, not per computed signal).
+Tests target requirements/behavior, not individual functions — see `home.component.spec.ts` for the pattern (one `it()` per user-facing filtering/pagination/sorting behavior, not per computed signal). Each `it()` description starts with the ID(s) of the Gherkin scenario(s) it verifies, e.g. `it('[home-4] filters by user', ...)` — see `specs/README.md` for the ID scheme.
 
 ## Architecture
 
