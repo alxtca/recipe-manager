@@ -32,3 +32,5 @@ Filtering/sorting/pagination for the homepage is **not** in the service layer â€
 `RecipeFilterComponent` and `RecipeCardComponent` are presentational children of `HomeComponent`, communicating via `input()`/`output()` signals rather than services â€” `RecipeFilterComponent` emits a full `FilterState` object on every change rather than partial updates.
 
 Ingredient filtering semantics: "include ingredients" requires a recipe to contain **all** selected ingredient names; "exclude ingredients" removes a recipe if it contains **any** of them (see `HomeComponent.matches`).
+
+`specs/` is the source of truth for behavior: when implementing a feature, build against its `.feature` scenarios.

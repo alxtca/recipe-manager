@@ -19,3 +19,13 @@ These apply across all features rather than to any single one:
 
 - Built with Angular (standalone components + signals) and Angular Material; no NgRx.
 - Front-end only: all data (recipes, session) is stored in the browser's localStorage; no database or backend server.
+
+## Adding a new feature
+
+1. Describe the feature idea to Claude (e.g. "new feature: users can rate recipes").
+2. Claude runs the `new-feature-spec` skill: it asks clarifying questions, checks for conflicts
+   with existing specs, and writes `<feature-name>/description.md` + `<feature-name>.feature`
+   after you approve the draft.
+3. In a separate step, ask Claude to implement it (e.g. "implement recipe-rating"). It runs the
+   `implement-the-feature` skill: it proposes a plan mapped to the `.feature` scenarios, implements
+   the feature after you approve the plan, adds tests for each scenario, and reports coverage.
