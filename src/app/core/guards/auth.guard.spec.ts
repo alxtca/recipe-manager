@@ -9,7 +9,7 @@ describe('authGuard', () => {
     TestBed.configureTestingModule({});
   });
 
-  it('allows activation when a user is logged in', () => {
+  it('[recipe-management-1] allows activation when a user is logged in', () => {
     const auth = TestBed.inject(AuthService);
     auth.login({ id: 'u1', name: 'Alice' });
 
@@ -18,7 +18,7 @@ describe('authGuard', () => {
     expect(result).toBe(true);
   });
 
-  it('redirects to /login when nobody is logged in', () => {
+  it('[authentication-2] redirects to /login when nobody is logged in', () => {
     const result = TestBed.runInInjectionContext(() => authGuard({} as any, {} as any));
 
     expect(result).toBeInstanceOf(UrlTree);

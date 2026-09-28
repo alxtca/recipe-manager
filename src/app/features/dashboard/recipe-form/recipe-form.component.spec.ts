@@ -23,7 +23,7 @@ describe('RecipeFormComponent', () => {
     localStorage.clear();
   });
 
-  it('starts invalid and requires all fields plus at least one ingredient', () => {
+  it('[recipe-management-2] starts invalid and requires all fields plus at least one ingredient', () => {
     configure(null);
     const fixture = TestBed.createComponent(RecipeFormComponent);
     fixture.detectChanges();
@@ -42,7 +42,7 @@ describe('RecipeFormComponent', () => {
     expect(component.form.valid).toBeTrue();
   });
 
-  it('adds and removes ingredient rows, keeping at least one', () => {
+  it('[recipe-management-2] adds and removes ingredient rows, keeping at least one', () => {
     configure(null);
     const fixture = TestBed.createComponent(RecipeFormComponent);
     fixture.detectChanges();
@@ -58,7 +58,7 @@ describe('RecipeFormComponent', () => {
     expect(component.ingredients.length).toBe(1);
   });
 
-  it('adds a new recipe attributed to the logged-in user on submit', () => {
+  it('[recipe-management-2] adds a new recipe attributed to the logged-in user on submit', () => {
     configure(null);
     const fixture = TestBed.createComponent(RecipeFormComponent);
     const auth = TestBed.inject(AuthService);
@@ -85,7 +85,7 @@ describe('RecipeFormComponent', () => {
     expect(router.navigateByUrl).toHaveBeenCalledWith('/dashboard');
   });
 
-  it('redirects away when editing a recipe that is not owned by the current user', () => {
+  it('[recipe-management-3] redirects away when editing a recipe that is not owned by the current user', () => {
     const otherRecipe = {
       id: 'other-1',
       name: 'Not mine',
