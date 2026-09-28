@@ -17,6 +17,7 @@ Unit tests reference the requirement(s) they verify by prefixing the `it()` desc
 - [authentication](authentication/) — demo-user login and access control
 - [recipe-management](recipe-management/) — adding, editing, and deleting recipes on the personal dashboard
 - [recipe-detail](recipe-detail/) — viewing a recipe's full details, scaling ingredients, and editing owned recipes
+- [recipe-rating](recipe-rating/) — rating recipes 1–10, showing average ratings, and filtering/sorting by rating
 - [application](application/) — cross-cutting app-wide behavior not owned by a single feature
 
 ## Platform-wide constraints
