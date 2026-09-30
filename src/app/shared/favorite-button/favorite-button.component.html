@@ -1,0 +1,12 @@
+<button
+  mat-icon-button
+  type="button"
+  class="favorite-button"
+  [class.active]="favorite()"
+  [attr.aria-label]="label()"
+  [attr.aria-pressed]="favorite()"
+  [matTooltip]="label()"
+  (click)="toggled.emit()"
+>
+  <mat-icon>{{ favorite() ? 'favorite' : 'favorite_border' }}</mat-icon>
+</button>

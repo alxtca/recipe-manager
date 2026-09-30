@@ -25,6 +25,7 @@ export class RecipeService {
       userName: user.name,
       createdAt: new Date().toISOString(),
       ratings: {},
+      favoritedBy: [],
     };
     this.recipes.update((list) => [...list, recipe]);
     this.persist();
@@ -45,6 +46,21 @@ export class RecipeService {
     this.persist();
   }
 
+  toggleFavorite(id: string, userId: string): void {
+    this.recipes.update((list) =>
+      list.map((r) => {
+        if (r.id !== id) {
+          return r;
+        }
+        const favoritedBy = r.favoritedBy.includes(userId)
+          ? r.favoritedBy.filter((u) => u !== userId)
+          : [...r.favoritedBy, userId];
+        return { ...r, favoritedBy };
+      }),
+    );
+    this.persist();
+  }
+
   delete(id: string): void {
     this.recipes.update((list) => list.filter((r) => r.id !== id));
     this.persist();
@@ -61,8 +77,10 @@ export class RecipeService {
     }
     try {
       const parsed = JSON.parse(raw) as Recipe[];
-      // Recipes saved before ratings existed have no `ratings` field.
-      return Array.isArray(parsed) ? parsed.map((r) => ({ ...r, ratings: r.ratings ?? {} })) : SEED_RECIPES;
+      // Recipes saved before ratings/favorites existed have no `ratings`/`favoritedBy` field.
+      return Array.isArray(parsed)
+        ? parsed.map((r) => ({ ...r, ratings: r.ratings ?? {}, favoritedBy: r.favoritedBy ?? [] }))
+        : SEED_RECIPES;
     } catch {
       return SEED_RECIPES;
     }

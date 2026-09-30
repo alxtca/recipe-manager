@@ -16,6 +16,7 @@ function makeRecipe(overrides: Partial<Recipe> & { id: string }): Recipe {
     userName: 'Alice',
     createdAt: '2026-01-01T00:00:00.000Z',
     ratings: {},
+    favoritedBy: [],
     ...overrides,
   };
 }
@@ -138,5 +139,38 @@ describe('RecipeDetailComponent', () => {
     expect(component.userRating()).toBe(10);
     expect(component.average()).toBe(7);
     expect(component.ratingCount()).toBe(2);
+  });
+
+  it('[recipe-favorites-1] shows no favorite button to anonymous users', () => {
+    configure('r1');
+    TestBed.inject(RecipeService).recipes.set([makeRecipe({ id: 'r1' })]);
+
+    const fixture = TestBed.createComponent(RecipeDetailComponent);
+    fixture.detectChanges();
+
+    expect(fixture.nativeElement.querySelector('app-favorite-button')).toBeNull();
+  });
+
+  it('[recipe-favorites-2, recipe-favorites-3] adds and removes the recipe from favorites on the detail page', () => {
+    configure('r1');
+    const recipeService = TestBed.inject(RecipeService);
+    recipeService.recipes.set([makeRecipe({ id: 'r1', userId: 'u2' })]);
+    TestBed.inject(AuthService).login({ id: 'u1', name: 'Alice' });
+
+    const fixture = TestBed.createComponent(RecipeDetailComponent);
+    fixture.detectChanges();
+    const button = () => fixture.nativeElement.querySelector('app-favorite-button button') as HTMLButtonElement;
+
+    expect(button().getAttribute('aria-label')).toBe('Add to favorites');
+
+    button().click();
+    fixture.detectChanges();
+    expect(recipeService.getById('r1')?.favoritedBy).toEqual(['u1']);
+    expect(button().getAttribute('aria-label')).toBe('Remove from favorites');
+
+    button().click();
+    fixture.detectChanges();
+    expect(recipeService.getById('r1')?.favoritedBy).toEqual([]);
+    expect(button().getAttribute('aria-label')).toBe('Add to favorites');
   });
 });

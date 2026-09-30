@@ -12,6 +12,13 @@
     } @else {
       <mat-icon class="recipe-icon placeholder">no_photography</mat-icon>
     }
+
+    @if (currentUserId()) {
+      <!-- Favorite toggle must not trigger the card's navigation to the detail page. -->
+      <div class="card-favorite" (click)="$event.stopPropagation()" (keydown)="$event.stopPropagation()">
+        <app-favorite-button [favorite]="isFavorite()" (toggled)="favoriteToggle.emit()"></app-favorite-button>
+      </div>
+    }
   </div>
 
   <mat-card-header>

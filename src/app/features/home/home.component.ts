@@ -50,7 +50,8 @@ export class HomeComponent {
 
   readonly filteredRecipes = computed<Recipe[]>(() => {
     const state = this.filter();
-    return this.recipeService.recipes().filter((recipe) => this.matches(recipe, state));
+    const userId = this.currentUserId();
+    return this.recipeService.recipes().filter((recipe) => this.matches(recipe, state, userId));
   });
 
   readonly sortedRecipes = computed<Recipe[]>(() => {
@@ -98,7 +99,14 @@ export class HomeComponent {
     }
   }
 
-  private matches(recipe: Recipe, state: FilterState): boolean {
+  onToggleFavorite(recipeId: string): void {
+    const userId = this.currentUserId();
+    if (userId) {
+      this.recipeService.toggleFavorite(recipeId, userId);
+    }
+  }
+
+  private matches(recipe: Recipe, state: FilterState, userId: string | null): boolean {
     if (state.userId && recipe.userId !== state.userId) {
       return false;
     }
@@ -117,6 +125,10 @@ export class HomeComponent {
       if (average === null || average < state.minRating) {
         return false;
       }
+    }
+    // The favorites filter only applies to a logged-in user; the checkbox is hidden otherwise.
+    if (state.favoritesOnly && userId && !recipe.favoritedBy.includes(userId)) {
+      return false;
     }
     return true;
   }

@@ -3,6 +3,7 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatSelectModule } from '@angular/material/select';
 import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
+import { MatCheckboxModule } from '@angular/material/checkbox';
 import { MatAutocompleteModule, MatAutocompleteSelectedEvent } from '@angular/material/autocomplete';
 import { MatChipsModule, MatChipInputEvent } from '@angular/material/chips';
 import { FormControl, ReactiveFormsModule } from '@angular/forms';
@@ -18,6 +19,7 @@ import { DEFAULT_FILTER_STATE, FilterState, SortDirection } from '../filter-stat
     MatSelectModule,
     MatButtonModule,
     MatIconModule,
+    MatCheckboxModule,
     MatAutocompleteModule,
     MatChipsModule,
     ReactiveFormsModule,
@@ -29,6 +31,8 @@ export class RecipeFilterComponent {
   readonly users = input.required<User[]>();
   readonly availableIngredients = input.required<string[]>();
   readonly filter = input.required<FilterState>();
+  /** Favorites are only available to logged-in users. */
+  readonly showFavorites = input(false);
   readonly filterChange = output<FilterState>();
 
   readonly cuisines = CUISINES;
@@ -60,6 +64,10 @@ export class RecipeFilterComponent {
 
   onMinRatingChange(minRating: number | null): void {
     this.emit({ ...this.filter(), minRating: minRating ?? null });
+  }
+
+  onFavoritesChange(favoritesOnly: boolean): void {
+    this.emit({ ...this.filter(), favoritesOnly });
   }
 
   onSortChange(sort: SortDirection): void {

@@ -6,6 +6,7 @@
 }
 
 .recipe-picture {
+  position: relative;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -29,6 +30,13 @@
   flex-wrap: wrap;
   gap: 4px;
   margin-top: 8px;
+}
+
+.card-favorite {
+  position: absolute;
+  top: 4px;
+  right: 4px;
+  cursor: default;
 }
 
 .card-rating {

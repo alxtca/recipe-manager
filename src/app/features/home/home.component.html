@@ -4,6 +4,7 @@
       [users]="availableUsers()"
       [availableIngredients]="availableIngredients()"
       [filter]="filter()"
+      [showFavorites]="!!currentUserId()"
       (filterChange)="onFilterChange($event)"
     ></app-recipe-filter>
   </aside>
@@ -16,6 +17,7 @@
             [recipe]="recipe"
             [currentUserId]="currentUserId()"
             (rate)="onRate(recipe.id, $event)"
+            (favoriteToggle)="onToggleFavorite(recipe.id)"
           ></app-recipe-card>
         }
       </div>

@@ -108,4 +108,59 @@ describe('RecipeService', () => {
 
     expect(freshService.recipes().length).toBe(SEED_RECIPES.length + 1);
   });
+
+
+  it('[recipe-favorites-2, recipe-favorites-3, recipe-favorites-6] toggles a favorite per user', () => {
+    const service = TestBed.inject(RecipeService);
+    const created = service.add(NEW_RECIPE, { id: 'u1', name: 'Alice' });
+
+    service.toggleFavorite(created.id, 'u2');
+    service.toggleFavorite(created.id, 'u3');
+    expect(service.getById(created.id)?.favoritedBy).toEqual(['u2', 'u3']);
+
+    service.toggleFavorite(created.id, 'u2');
+    expect(service.getById(created.id)?.favoritedBy).toEqual(['u3']);
+  });
+
+  it('[recipe-favorites-5] lets the owner favorite their own recipe', () => {
+    const service = TestBed.inject(RecipeService);
+    const created = service.add(NEW_RECIPE, { id: 'u1', name: 'Alice' });
+
+    service.toggleFavorite(created.id, 'u1');
+
+    expect(service.getById(created.id)?.favoritedBy).toEqual(['u1']);
+  });
+
+  it('[recipe-favorites-7] persists favorites and keeps them when the recipe is edited', () => {
+    const service = TestBed.inject(RecipeService);
+    const created = service.add(NEW_RECIPE, { id: 'u1', name: 'Alice' });
+    service.toggleFavorite(created.id, 'u2');
+    service.update(created.id, { ...NEW_RECIPE, name: 'Renamed' });
+
+    TestBed.resetTestingModule();
+    const freshService = TestBed.inject(RecipeService);
+
+    expect(freshService.getById(created.id)?.favoritedBy).toEqual(['u2']);
+  });
+
+  it('[recipe-favorites-7] loads recipes saved before favorites existed with no favorites', () => {
+    const legacy: Partial<Recipe> = { ...SEED_RECIPES[0] };
+    delete legacy.favoritedBy;
+    localStorage.setItem('rm-recipes', JSON.stringify([legacy]));
+
+    const service = TestBed.inject(RecipeService);
+
+    expect(service.recipes()[0].favoritedBy).toEqual([]);
+  });
+
+  it('[recipe-favorites-11] deleting a recipe removes it from every favorites list', () => {
+    const service = TestBed.inject(RecipeService);
+    const created = service.add(NEW_RECIPE, { id: 'u1', name: 'Alice' });
+    service.toggleFavorite(created.id, 'u2');
+
+    service.delete(created.id);
+
+    const persisted = JSON.parse(localStorage.getItem('rm-recipes')!) as Recipe[];
+    expect(persisted.some((r) => r.favoritedBy.includes('u2'))).toBeFalse();
+  });
 });

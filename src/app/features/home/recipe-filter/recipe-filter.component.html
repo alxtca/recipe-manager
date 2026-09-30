@@ -31,6 +31,12 @@
     </mat-select>
   </mat-form-field>
 
+  @if (showFavorites()) {
+    <mat-checkbox class="favorites-checkbox" [checked]="filter().favoritesOnly" (change)="onFavoritesChange($event.checked)">
+      Favorites
+    </mat-checkbox>
+  }
+
   <mat-form-field appearance="outline" class="full-width">
     <mat-label>Sort by</mat-label>
     <mat-select [value]="filter().sort" (selectionChange)="onSortChange($event.value)">

@@ -9,13 +9,14 @@ import { Ingredient } from '../../core/models/recipe.model';
 import { averageRating, ratingCount } from '../../core/utils/rating';
 import { NotFoundComponent } from '../not-found/not-found.component';
 import { RecipeRatingComponent } from '../../shared/recipe-rating/recipe-rating.component';
+import { FavoriteButtonComponent } from '../../shared/favorite-button/favorite-button.component';
 
 const PORTION_OPTIONS = [0.5, 1, 2, 3, 4];
 
 @Component({
   selector: 'app-recipe-detail',
   standalone: true,
-  imports: [RouterLink, MatIconModule, MatButtonModule, MatButtonToggleModule, NotFoundComponent, RecipeRatingComponent],
+  imports: [RouterLink, MatIconModule, MatButtonModule, MatButtonToggleModule, NotFoundComponent, RecipeRatingComponent, FavoriteButtonComponent],
   templateUrl: './recipe-detail.component.html',
   styleUrl: './recipe-detail.component.scss',
 })
@@ -65,6 +66,11 @@ export class RecipeDetailComponent {
     return userId ? (this.recipe()?.ratings[userId] ?? null) : null;
   });
 
+  readonly isFavorite = computed(() => {
+    const userId = this.currentUserId();
+    return !!userId && !!this.recipe()?.favoritedBy.includes(userId);
+  });
+
   selectPortions(value: number): void {
     this.portions.set(value);
   }
@@ -73,6 +79,13 @@ export class RecipeDetailComponent {
     const userId = this.currentUserId();
     if (userId) {
       this.recipeService.rate(this.id, userId, score);
+    }
+  }
+
+  toggleFavorite(): void {
+    const userId = this.currentUserId();
+    if (userId) {
+      this.recipeService.toggleFavorite(this.id, userId);
     }
   }
 }

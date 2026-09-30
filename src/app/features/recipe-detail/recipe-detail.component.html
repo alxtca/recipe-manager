@@ -9,7 +9,12 @@
     </div>
 
     <div class="recipe-header">
-      <h1>{{ recipe.name }}</h1>
+      <div class="title-row">
+        <h1>{{ recipe.name }}</h1>
+        @if (currentUserId()) {
+          <app-favorite-button [favorite]="isFavorite()" (toggled)="toggleFavorite()"></app-favorite-button>
+        }
+      </div>
       <p class="recipe-meta">{{ recipe.cuisine }} · Posted by {{ recipe.userName }}</p>
       <app-recipe-rating
         class="recipe-rating"

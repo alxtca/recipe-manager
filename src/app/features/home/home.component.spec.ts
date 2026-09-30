@@ -17,6 +17,7 @@ function makeRecipe(overrides: Partial<Recipe> & { id: string }): Recipe {
     userName: 'Alice',
     createdAt: '2026-01-01T00:00:00.000Z',
     ratings: {},
+    favoritedBy: [],
     ...overrides,
   };
 }
@@ -190,5 +191,72 @@ describe('HomeComponent', () => {
     component.onRate('r1', 8);
 
     expect(TestBed.inject(RecipeService).getById('r1')?.ratings).toEqual({});
+  });
+
+  it('[recipe-favorites-8] filters to the logged-in user\'s favorites', () => {
+    const component = setRecipes([
+      makeRecipe({ id: 'mine', favoritedBy: ['u1'] }),
+      makeRecipe({ id: 'others', favoritedBy: ['u2'] }),
+      makeRecipe({ id: 'none' }),
+    ]);
+    TestBed.inject(AuthService).login({ id: 'u1', name: 'Alice' });
+
+    component.onFilterChange({ ...DEFAULT_FILTER_STATE, favoritesOnly: true });
+
+    expect(component.filteredRecipes().map((r) => r.id)).toEqual(['mine']);
+  });
+
+  it('[recipe-favorites-9] combines the favorites filter with other filters', () => {
+    const component = setRecipes([
+      makeRecipe({ id: 'fav-thai', cuisine: 'Thai', favoritedBy: ['u1'] }),
+      makeRecipe({ id: 'fav-italian', cuisine: 'Italian', favoritedBy: ['u1'] }),
+      makeRecipe({ id: 'thai', cuisine: 'Thai' }),
+    ]);
+    TestBed.inject(AuthService).login({ id: 'u1', name: 'Alice' });
+
+    component.onFilterChange({ ...DEFAULT_FILTER_STATE, favoritesOnly: true, cuisine: 'Thai' });
+
+    expect(component.filteredRecipes().map((r) => r.id)).toEqual(['fav-thai']);
+  });
+
+  it('[recipe-favorites-10] shows the empty-state message when the user has no favorites', () => {
+    const fixture = TestBed.createComponent(HomeComponent);
+    TestBed.inject(RecipeService).recipes.set([makeRecipe({ id: 'r1' })]);
+    TestBed.inject(AuthService).login({ id: 'u1', name: 'Alice' });
+    fixture.componentInstance.onFilterChange({ ...DEFAULT_FILTER_STATE, favoritesOnly: true });
+    fixture.detectChanges();
+
+    expect(fixture.nativeElement.textContent).toContain('No recipes match the selected filters.');
+  });
+
+  it('[recipe-favorites-1] hides the favorites checkbox and ignores favorite toggles when logged out', () => {
+    const fixture = TestBed.createComponent(HomeComponent);
+    TestBed.inject(RecipeService).recipes.set([makeRecipe({ id: 'r1' })]);
+    fixture.detectChanges();
+
+    expect(fixture.nativeElement.querySelector('mat-checkbox')).toBeNull();
+
+    fixture.componentInstance.onToggleFavorite('r1');
+    expect(TestBed.inject(RecipeService).getById('r1')?.favoritedBy).toEqual([]);
+  });
+
+  it('[recipe-favorites-1, recipe-favorites-8] shows the favorites checkbox to logged-in users', () => {
+    TestBed.inject(AuthService).login({ id: 'u1', name: 'Alice' });
+    const fixture = TestBed.createComponent(HomeComponent);
+    fixture.detectChanges();
+
+    expect(fixture.nativeElement.querySelector('mat-checkbox')?.textContent).toContain('Favorites');
+  });
+
+  it('[recipe-favorites-2, recipe-favorites-3] toggles a favorite from a card for the logged-in user', () => {
+    const component = setRecipes([makeRecipe({ id: 'r1' })]);
+    TestBed.inject(AuthService).login({ id: 'u1', name: 'Alice' });
+    const recipeService = TestBed.inject(RecipeService);
+
+    component.onToggleFavorite('r1');
+    expect(recipeService.getById('r1')?.favoritedBy).toEqual(['u1']);
+
+    component.onToggleFavorite('r1');
+    expect(recipeService.getById('r1')?.favoritedBy).toEqual([]);
   });
 });

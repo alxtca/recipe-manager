@@ -45,7 +45,7 @@ function userName(userId: string): string {
   return DEMO_USERS.find((u) => u.id === userId)?.name ?? 'Unknown';
 }
 
-const seed: Omit<Recipe, 'userName' | 'ratings'>[] = [
+const seed: Omit<Recipe, 'userName' | 'ratings' | 'favoritedBy'>[] = [
   {
     id: 'r1',
     name: 'Margherita Pizza',
@@ -212,4 +212,5 @@ export const SEED_RECIPES: Recipe[] = seed.map((r) => ({
   ...r,
   userName: userName(r.userId),
   ratings: SEED_RATINGS[r.id] ?? {},
+  favoritedBy: [],
 }));
