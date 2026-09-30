@@ -11,7 +11,7 @@ describe('authGuard', () => {
 
   it('[recipe-management-1] allows activation when a user is logged in', () => {
     const auth = TestBed.inject(AuthService);
-    auth.login({ id: 'u1', name: 'Alice' });
+    auth.login({ id: 'user1', name: 'Alice' });
 
     const result = TestBed.runInInjectionContext(() => authGuard({} as any, {} as any));
 

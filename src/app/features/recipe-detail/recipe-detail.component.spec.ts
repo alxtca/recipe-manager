@@ -12,7 +12,7 @@ function makeRecipe(overrides: Partial<Recipe> & { id: string }): Recipe {
     cuisine: 'Italian',
     directions: 'Do it.',
     ingredients: [{ name: 'Flour', quantity: 100, unit: 'g' }],
-    userId: 'u1',
+    userId: 'user1',
     userName: 'Alice',
     createdAt: '2026-01-01T00:00:00.000Z',
     ratings: {},
@@ -34,18 +34,18 @@ describe('RecipeDetailComponent', () => {
   beforeEach(() => localStorage.clear());
 
   it('[recipe-detail-2] shows the recipe when the id exists', () => {
-    configure('r1');
-    TestBed.inject(RecipeService).recipes.set([makeRecipe({ id: 'r1' })]);
+    configure('recipe1');
+    TestBed.inject(RecipeService).recipes.set([makeRecipe({ id: 'recipe1' })]);
 
     const fixture = TestBed.createComponent(RecipeDetailComponent);
     fixture.detectChanges();
 
-    expect(fixture.componentInstance.recipe()?.id).toBe('r1');
+    expect(fixture.componentInstance.recipe()?.id).toBe('recipe1');
   });
 
   it('[application-2] has no recipe when the id does not exist', () => {
     configure('missing');
-    TestBed.inject(RecipeService).recipes.set([makeRecipe({ id: 'r1' })]);
+    TestBed.inject(RecipeService).recipes.set([makeRecipe({ id: 'recipe1' })]);
 
     const fixture = TestBed.createComponent(RecipeDetailComponent);
     fixture.detectChanges();
@@ -54,9 +54,9 @@ describe('RecipeDetailComponent', () => {
   });
 
   it('[recipe-detail-3, recipe-detail-4, recipe-detail-5] defaults to 1x portions and scales ingredient quantities', () => {
-    configure('r1');
+    configure('recipe1');
     TestBed.inject(RecipeService).recipes.set([
-      makeRecipe({ id: 'r1', ingredients: [{ name: 'Flour', quantity: 100, unit: 'g' }] }),
+      makeRecipe({ id: 'recipe1', ingredients: [{ name: 'Flour', quantity: 100, unit: 'g' }] }),
     ]);
 
     const fixture = TestBed.createComponent(RecipeDetailComponent);
@@ -74,8 +74,8 @@ describe('RecipeDetailComponent', () => {
   });
 
   it('[recipe-detail-6, recipe-detail-7, recipe-detail-8] shows edit access only to the recipe owner', () => {
-    configure('r1');
-    TestBed.inject(RecipeService).recipes.set([makeRecipe({ id: 'r1', userId: 'u1' })]);
+    configure('recipe1');
+    TestBed.inject(RecipeService).recipes.set([makeRecipe({ id: 'recipe1', userId: 'user1' })]);
     const auth = TestBed.inject(AuthService);
 
     const fixture = TestBed.createComponent(RecipeDetailComponent);
@@ -84,17 +84,17 @@ describe('RecipeDetailComponent', () => {
 
     expect(component.isOwner()).toBeFalse();
 
-    auth.login({ id: 'u1', name: 'Alice' });
+    auth.login({ id: 'user1', name: 'Alice' });
     expect(component.isOwner()).toBeTrue();
 
-    auth.login({ id: 'u2', name: 'Bob' });
+    auth.login({ id: 'user2', name: 'Bob' });
     expect(component.isOwner()).toBeFalse();
   });
 
   it('[recipe-rating-2, recipe-rating-3] shows the average rating and count, or "Not rated yet"', () => {
-    configure('r1');
+    configure('recipe1');
     const recipeService = TestBed.inject(RecipeService);
-    recipeService.recipes.set([makeRecipe({ id: 'r1' })]);
+    recipeService.recipes.set([makeRecipe({ id: 'recipe1' })]);
 
     const fixture = TestBed.createComponent(RecipeDetailComponent);
     fixture.detectChanges();
@@ -102,15 +102,15 @@ describe('RecipeDetailComponent', () => {
 
     expect(element.textContent).toContain('Not rated yet');
 
-    recipeService.recipes.set([makeRecipe({ id: 'r1', ratings: { u1: 7, u2: 8, u3: 8 } })]);
+    recipeService.recipes.set([makeRecipe({ id: 'recipe1', ratings: { user1: 7, user2: 8, user3: 8 } })]);
     fixture.detectChanges();
 
     expect(element.textContent).toContain('7.7 (3)');
   });
 
   it('[recipe-rating-4] shows no rating controls to anonymous users', () => {
-    configure('r1');
-    TestBed.inject(RecipeService).recipes.set([makeRecipe({ id: 'r1', ratings: { u2: 6 } })]);
+    configure('recipe1');
+    TestBed.inject(RecipeService).recipes.set([makeRecipe({ id: 'recipe1', ratings: { user2: 6 } })]);
 
     const fixture = TestBed.createComponent(RecipeDetailComponent);
     fixture.detectChanges();
@@ -121,10 +121,10 @@ describe('RecipeDetailComponent', () => {
   });
 
   it('[recipe-rating-5, recipe-rating-6, recipe-rating-8] rates and re-rates a recipe, including one the user owns', () => {
-    configure('r1');
+    configure('recipe1');
     const recipeService = TestBed.inject(RecipeService);
-    recipeService.recipes.set([makeRecipe({ id: 'r1', userId: 'u1', ratings: { u2: 4 } })]);
-    TestBed.inject(AuthService).login({ id: 'u1', name: 'Alice' });
+    recipeService.recipes.set([makeRecipe({ id: 'recipe1', userId: 'user1', ratings: { user2: 4 } })]);
+    TestBed.inject(AuthService).login({ id: 'user1', name: 'Alice' });
 
     const fixture = TestBed.createComponent(RecipeDetailComponent);
     fixture.detectChanges();
@@ -142,8 +142,8 @@ describe('RecipeDetailComponent', () => {
   });
 
   it('[recipe-favorites-1] shows no favorite button to anonymous users', () => {
-    configure('r1');
-    TestBed.inject(RecipeService).recipes.set([makeRecipe({ id: 'r1' })]);
+    configure('recipe1');
+    TestBed.inject(RecipeService).recipes.set([makeRecipe({ id: 'recipe1' })]);
 
     const fixture = TestBed.createComponent(RecipeDetailComponent);
     fixture.detectChanges();
@@ -152,10 +152,10 @@ describe('RecipeDetailComponent', () => {
   });
 
   it('[recipe-favorites-2, recipe-favorites-3] adds and removes the recipe from favorites on the detail page', () => {
-    configure('r1');
+    configure('recipe1');
     const recipeService = TestBed.inject(RecipeService);
-    recipeService.recipes.set([makeRecipe({ id: 'r1', userId: 'u2' })]);
-    TestBed.inject(AuthService).login({ id: 'u1', name: 'Alice' });
+    recipeService.recipes.set([makeRecipe({ id: 'recipe1', userId: 'user2' })]);
+    TestBed.inject(AuthService).login({ id: 'user1', name: 'Alice' });
 
     const fixture = TestBed.createComponent(RecipeDetailComponent);
     fixture.detectChanges();
@@ -165,12 +165,12 @@ describe('RecipeDetailComponent', () => {
 
     button().click();
     fixture.detectChanges();
-    expect(recipeService.getById('r1')?.favoritedBy).toEqual(['u1']);
+    expect(recipeService.getById('recipe1')?.favoritedBy).toEqual(['user1']);
     expect(button().getAttribute('aria-label')).toBe('Remove from favorites');
 
     button().click();
     fixture.detectChanges();
-    expect(recipeService.getById('r1')?.favoritedBy).toEqual([]);
+    expect(recipeService.getById('recipe1')?.favoritedBy).toEqual([]);
     expect(button().getAttribute('aria-label')).toBe('Add to favorites');
   });
 });

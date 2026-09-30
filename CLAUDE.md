@@ -16,6 +16,8 @@ There is no e2e test setup and no lint script configured.
 
 Tests target requirements/behavior, not individual functions — see `home.component.spec.ts` for the pattern (one `it()` per user-facing filtering/pagination/sorting behavior, not per computed signal). Each `it()` description starts with the ID(s) of the Gherkin scenario(s) it verifies, e.g. `it('[home-4] filters by user', ...)` — see `specs/README.md` for the ID scheme.
 
+Invented test data uses full descriptive names (`'user1'`, `'user2'`, `'recipe1'`), not abbreviations like `'u2'`/`'r1'`. Values that must match real app data (e.g. `DEMO_USERS` ids, which really are `'u1'`–`'u5'`) come from the constant (`DEMO_USERS[0].id`) rather than a literal.
+
 ## Architecture
 
 This is a **front-end-only** Angular 19 app (standalone components + signals, no NgModules, no NgRx). There is no backend: the requirement specs (see `specs/`) require all data to live in the browser, so the two core services persist directly to `localStorage` instead of calling an API.
