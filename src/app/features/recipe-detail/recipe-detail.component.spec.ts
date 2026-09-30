@@ -82,13 +82,13 @@ describe('RecipeDetailComponent', () => {
     fixture.detectChanges();
     const component = fixture.componentInstance;
 
-    expect(component.isOwner()).toBeFalse();
+    expect(component.isOwner()).toBe(false);
 
     auth.login({ id: 'user1', name: 'Alice' });
-    expect(component.isOwner()).toBeTrue();
+    expect(component.isOwner()).toBe(true);
 
     auth.login({ id: 'user2', name: 'Bob' });
-    expect(component.isOwner()).toBeFalse();
+    expect(component.isOwner()).toBe(false);
   });
 
   it('[recipe-rating-2, recipe-rating-3] shows the average rating and count, or "Not rated yet"', () => {

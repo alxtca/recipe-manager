@@ -1,4 +1,4 @@
-import { Component, computed, input, output } from '@angular/core';
+import { Component, computed, input, output, ChangeDetectionStrategy } from '@angular/core';
 import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
 import { MatTooltipModule } from '@angular/material/tooltip';
@@ -8,6 +8,7 @@ import { MatTooltipModule } from '@angular/material/tooltip';
   standalone: true,
   imports: [MatButtonModule, MatIconModule, MatTooltipModule],
   templateUrl: './favorite-button.component.html',
+  changeDetection: ChangeDetectionStrategy.Eager,
   styleUrl: './favorite-button.component.scss',
 })
 export class FavoriteButtonComponent {

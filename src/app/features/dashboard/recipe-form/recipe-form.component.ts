@@ -1,4 +1,4 @@
-import { Component, inject, OnInit } from '@angular/core';
+import { Component, inject, OnInit, ChangeDetectionStrategy } from '@angular/core';
 import { ActivatedRoute, Router, RouterLink } from '@angular/router';
 import { FormArray, FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
 import { MatFormFieldModule } from '@angular/material/form-field';
@@ -26,6 +26,7 @@ import { RecipeInput } from '../../../core/models/recipe.model';
     MatButtonToggleModule,
   ],
   templateUrl: './recipe-form.component.html',
+  changeDetection: ChangeDetectionStrategy.Eager,
   styleUrl: './recipe-form.component.scss',
 })
 export class RecipeFormComponent implements OnInit {

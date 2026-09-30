@@ -1,4 +1,4 @@
-import { Component, computed, inject, signal } from '@angular/core';
+import { Component, computed, inject, signal, ChangeDetectionStrategy } from '@angular/core';
 import { MatPaginatorModule, PageEvent } from '@angular/material/paginator';
 import { RecipeService } from '../../core/services/recipe.service';
 import { AuthService } from '../../core/services/auth.service';
@@ -16,6 +16,7 @@ const PAGE_SIZE = 21;
   standalone: true,
   imports: [RecipeCardComponent, RecipeFilterComponent, MatPaginatorModule],
   templateUrl: './home.component.html',
+  changeDetection: ChangeDetectionStrategy.Eager,
   styleUrl: './home.component.scss',
 })
 export class HomeComponent {

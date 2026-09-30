@@ -1,4 +1,4 @@
-import { Component, computed, inject, signal } from '@angular/core';
+import { Component, computed, inject, signal, ChangeDetectionStrategy } from '@angular/core';
 import { ActivatedRoute, RouterLink } from '@angular/router';
 import { MatIconModule } from '@angular/material/icon';
 import { MatButtonModule } from '@angular/material/button';
@@ -18,6 +18,7 @@ const PORTION_OPTIONS = [0.5, 1, 2, 3, 4];
   standalone: true,
   imports: [RouterLink, MatIconModule, MatButtonModule, MatButtonToggleModule, NotFoundComponent, RecipeRatingComponent, FavoriteButtonComponent],
   templateUrl: './recipe-detail.component.html',
+  changeDetection: ChangeDetectionStrategy.Eager,
   styleUrl: './recipe-detail.component.scss',
 })
 export class RecipeDetailComponent {

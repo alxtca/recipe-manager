@@ -45,7 +45,7 @@ describe('RecipeCardComponent', () => {
   it('[recipe-rating-9] using the rating controls does not navigate to the detail page', () => {
     const fixture = render('user1');
     const router = TestBed.inject(Router);
-    spyOn(router, 'navigateByUrl');
+    vi.spyOn(router, 'navigateByUrl').mockResolvedValue(true);
 
     const editButton = [...fixture.nativeElement.querySelectorAll('button')].find(
       (b: HTMLElement) => b.textContent?.trim() === 'Edit',
@@ -59,7 +59,7 @@ describe('RecipeCardComponent', () => {
   it('[recipe-detail-1] clicking the card outside the rating controls still navigates', () => {
     const fixture = render('user1');
     const router = TestBed.inject(Router);
-    spyOn(router, 'navigateByUrl');
+    vi.spyOn(router, 'navigateByUrl').mockResolvedValue(true);
 
     (fixture.nativeElement.querySelector('mat-card-title') as HTMLElement).click();
 
@@ -91,7 +91,7 @@ describe('RecipeCardComponent', () => {
   it('[recipe-favorites-4] clicking the favorite button emits a toggle without navigating', () => {
     const fixture = render('user1');
     const router = TestBed.inject(Router);
-    spyOn(router, 'navigateByUrl');
+    vi.spyOn(router, 'navigateByUrl').mockResolvedValue(true);
     let toggles = 0;
     fixture.componentInstance.favoriteToggle.subscribe(() => toggles++);
 

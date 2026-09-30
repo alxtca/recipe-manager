@@ -1,4 +1,4 @@
-import { Component, computed, input, output } from '@angular/core';
+import { Component, computed, input, output, ChangeDetectionStrategy } from '@angular/core';
 import { RouterLink } from '@angular/router';
 import { MatCardModule } from '@angular/material/card';
 import { MatIconModule } from '@angular/material/icon';
@@ -13,6 +13,7 @@ import { FavoriteButtonComponent } from '../../../shared/favorite-button/favorit
   standalone: true,
   imports: [RouterLink, MatCardModule, MatIconModule, MatChipsModule, RecipeRatingComponent, FavoriteButtonComponent],
   templateUrl: './recipe-card.component.html',
+  changeDetection: ChangeDetectionStrategy.Eager,
   styleUrl: './recipe-card.component.scss',
 })
 export class RecipeCardComponent {

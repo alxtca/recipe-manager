@@ -1,4 +1,4 @@
-import { Component, computed, input, output, signal } from '@angular/core';
+import { Component, computed, input, output, signal, ChangeDetectionStrategy } from '@angular/core';
 import { DecimalPipe } from '@angular/common';
 import { MatButtonModule } from '@angular/material/button';
 import { MatFormFieldModule } from '@angular/material/form-field';
@@ -11,6 +11,7 @@ import { RATING_VALUES } from '../../core/data/constants';
   standalone: true,
   imports: [DecimalPipe, MatButtonModule, MatFormFieldModule, MatIconModule, MatSelectModule],
   templateUrl: './recipe-rating.component.html',
+  changeDetection: ChangeDetectionStrategy.Eager,
   styleUrl: './recipe-rating.component.scss',
 })
 export class RecipeRatingComponent {

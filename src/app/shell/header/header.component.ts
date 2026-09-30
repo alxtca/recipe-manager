@@ -1,4 +1,4 @@
-import { Component, inject } from '@angular/core';
+import { Component, inject, ChangeDetectionStrategy } from '@angular/core';
 import { RouterLink, RouterLinkActive } from '@angular/router';
 import { MatToolbarModule } from '@angular/material/toolbar';
 import { MatButtonModule } from '@angular/material/button';
@@ -10,6 +10,7 @@ import { AuthService } from '../../core/services/auth.service';
   standalone: true,
   imports: [RouterLink, RouterLinkActive, MatToolbarModule, MatButtonModule, MatIconModule],
   templateUrl: './header.component.html',
+  changeDetection: ChangeDetectionStrategy.Eager,
   styleUrl: './header.component.scss',
 })
 export class HeaderComponent {

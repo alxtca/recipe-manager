@@ -1,4 +1,4 @@
-import { Component, computed, input, output } from '@angular/core';
+import { Component, computed, input, output, ChangeDetectionStrategy } from '@angular/core';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatSelectModule } from '@angular/material/select';
 import { MatButtonModule } from '@angular/material/button';
@@ -25,6 +25,7 @@ import { DEFAULT_FILTER_STATE, FilterState, SortDirection } from '../filter-stat
     ReactiveFormsModule,
   ],
   templateUrl: './recipe-filter.component.html',
+  changeDetection: ChangeDetectionStrategy.Eager,
   styleUrl: './recipe-filter.component.scss',
 })
 export class RecipeFilterComponent {
