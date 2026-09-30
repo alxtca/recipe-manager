@@ -65,7 +65,7 @@ describe('RecipeFormComponent', () => {
     const recipeService = TestBed.inject(RecipeService);
     const router = TestBed.inject(Router);
     spyOn(router, 'navigateByUrl');
-    auth.login({ id: 'u1', name: 'Alice' });
+    auth.login({ id: 'user1', name: 'Alice' });
     fixture.detectChanges();
 
     const component = fixture.componentInstance;
@@ -81,7 +81,7 @@ describe('RecipeFormComponent', () => {
     component.submit();
 
     expect(recipeService.recipes().length).toBe(before + 1);
-    expect(recipeService.recipes().at(-1)?.userId).toBe('u1');
+    expect(recipeService.recipes().at(-1)?.userId).toBe('user1');
     expect(router.navigateByUrl).toHaveBeenCalledWith('/dashboard');
   });
 
@@ -93,12 +93,12 @@ describe('RecipeFormComponent', () => {
       cuisine: 'Other',
       directions: 'x',
       ingredients: [{ name: 'x', quantity: 1, unit: 'g' }],
-      userId: 'u2',
+      userId: 'user2',
       userName: 'Bob',
       createdAt: '2026-01-01T00:00:00.000Z',
     };
     localStorage.setItem('rm-recipes', JSON.stringify([otherRecipe]));
-    localStorage.setItem('rm-current-user', JSON.stringify({ id: 'u1', name: 'Alice' }));
+    localStorage.setItem('rm-current-user', JSON.stringify({ id: 'user1', name: 'Alice' }));
 
     configure(otherRecipe.id);
     const router = TestBed.inject(Router);

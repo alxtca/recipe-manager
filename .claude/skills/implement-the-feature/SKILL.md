@@ -78,7 +78,8 @@ of building it.
 Write specs following the pattern in `src/app/features/home/home.component.spec.ts`: one `it()`
 per user-facing behavior, named after the behavior rather than the function. Every scenario in
 the `.feature` file should map to at least one `it()`. Update any existing specs that the change
-breaks, and don't delete their assertions to make them pass.
+breaks, and don't delete their assertions to make them pass. Follow the test conventions in
+`CLAUDE.md` (scenario-ID prefixes, full descriptive names for test data).
 
 Run:
 
