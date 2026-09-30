@@ -29,7 +29,7 @@ describe('RecipeFormComponent', () => {
     fixture.detectChanges();
     const component = fixture.componentInstance;
 
-    expect(component.form.invalid).toBeTrue();
+    expect(component.form.invalid).toBe(true);
 
     component.form.patchValue({
       name: 'Test',
@@ -39,7 +39,7 @@ describe('RecipeFormComponent', () => {
     });
     component.ingredients.at(0).patchValue({ name: 'Flour', quantity: 1, unit: 'g' });
 
-    expect(component.form.valid).toBeTrue();
+    expect(component.form.valid).toBe(true);
   });
 
   it('[recipe-management-2] adds and removes ingredient rows, keeping at least one', () => {
@@ -64,7 +64,7 @@ describe('RecipeFormComponent', () => {
     const auth = TestBed.inject(AuthService);
     const recipeService = TestBed.inject(RecipeService);
     const router = TestBed.inject(Router);
-    spyOn(router, 'navigateByUrl');
+    vi.spyOn(router, 'navigateByUrl').mockResolvedValue(true);
     auth.login({ id: 'user1', name: 'Alice' });
     fixture.detectChanges();
 
@@ -102,7 +102,7 @@ describe('RecipeFormComponent', () => {
 
     configure(otherRecipe.id);
     const router = TestBed.inject(Router);
-    spyOn(router, 'navigateByUrl');
+    vi.spyOn(router, 'navigateByUrl').mockResolvedValue(true);
 
     const fixture = TestBed.createComponent(RecipeFormComponent);
     fixture.detectChanges();

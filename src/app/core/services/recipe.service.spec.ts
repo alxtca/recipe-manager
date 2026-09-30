@@ -161,6 +161,6 @@ describe('RecipeService', () => {
     service.delete(created.id);
 
     const persisted = JSON.parse(localStorage.getItem('rm-recipes')!) as Recipe[];
-    expect(persisted.some((r) => r.favoritedBy.includes('user2'))).toBeFalse();
+    expect(persisted.some((r) => r.favoritedBy.includes('user2'))).toBe(false);
   });
 });

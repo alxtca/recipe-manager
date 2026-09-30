@@ -84,7 +84,7 @@ breaks, and don't delete their assertions to make them pass. Follow the test con
 Run:
 
 ```bash
-ng test --watch=false --browsers=ChromeHeadless
+ng test --watch=false
 ng build
 ```
 

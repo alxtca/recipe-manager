@@ -40,7 +40,7 @@ describe('HomeComponent', () => {
     const recipes = Array.from({ length: 21 }, (_, i) => makeRecipe({ id: `recipe${i}` }));
     const component = setRecipes(recipes);
 
-    expect(component.showPagination()).toBeFalse();
+    expect(component.showPagination()).toBe(false);
     expect(component.pagedRecipes().length).toBe(21);
   });
 
@@ -48,7 +48,7 @@ describe('HomeComponent', () => {
     const recipes = Array.from({ length: 25 }, (_, i) => makeRecipe({ id: `recipe${i}` }));
     const component = setRecipes(recipes);
 
-    expect(component.showPagination()).toBeTrue();
+    expect(component.showPagination()).toBe(true);
     expect(component.pagedRecipes().length).toBe(21);
 
     component.onPageChange({ pageIndex: 1, pageSize: 21, length: 25 });
